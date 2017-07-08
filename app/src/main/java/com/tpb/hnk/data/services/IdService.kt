@@ -1,6 +1,6 @@
 package com.tpb.hnk.data.services
 
-import io.reactivex.Observable
+import io.reactivex.Single
 import retrofit2.http.GET
 
 /**
@@ -9,24 +9,24 @@ import retrofit2.http.GET
 interface IdService {
 
     @GET("newstories.json")
-    fun listNewIds(): Observable<List<Long>>
+    fun listNewIds(): Single<List<Long>>
 
     @GET("topstories.json")
-    fun listTopIds(): Observable<List<Long>>
+    fun listTopIds(): Single<List<Long>>
 
     @GET("beststories.json")
-    fun listBestIds(): Observable<List<Long>>
+    fun listBestIds(): Single<List<Long>>
 
     @GET("askstories.json")
-    fun listAskIds(): Observable<List<Long>>
+    fun listAskIds(): Single<List<Long>>
 
     @GET("showstories.json")
-    fun listShowIds(): Observable<List<Long>>
+    fun listShowIds(): Single<List<Long>>
 
     @GET("jobstories.json")
-    fun listJobIds(): Observable<List<Long>>
+    fun listJobIds(): Single<List<Long>>
 
     @GET("maxitem.json")
-    fun getTopId(): Observable<Long>
+    fun getTopId(): Single<Long>
 
 }
