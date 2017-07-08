@@ -1,4 +1,4 @@
-package com.tpb.hnk.ui
+package com.tpb.hnk.views
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity

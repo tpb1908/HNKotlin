@@ -2,7 +2,7 @@ package com.tpb.hnk.dagger.component
 
 import com.tpb.hnk.dagger.module.AppModule
 import com.tpb.hnk.dagger.module.NetModule
-import com.tpb.hnk.ui.MainActivity
+import com.tpb.hnk.views.MainActivity
 import dagger.Component
 import javax.inject.Singleton
 
