@@ -5,6 +5,8 @@ import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.tpb.hnk.data.services.IdService
+import com.tpb.hnk.data.services.ItemService
+import com.tpb.hnk.data.services.UserService
 import com.tpb.hnk.util.info
 import dagger.Module
 import dagger.Provides
@@ -70,6 +72,18 @@ import javax.inject.Singleton
     @Singleton
     fun provideIdService(retrofit: Retrofit): IdService {
         return retrofit.create(IdService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideItemService(retrofit: Retrofit): ItemService {
+        return retrofit.create(ItemService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserService(retrofit: Retrofit): UserService {
+        return retrofit.create(UserService::class.java)
     }
 
 }
