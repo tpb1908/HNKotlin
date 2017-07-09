@@ -1,5 +1,6 @@
 package com.tpb.hnk.data.services
 
+import com.tpb.hnk.R
 import io.reactivex.Observable
 import retrofit2.http.GET
 
@@ -31,8 +32,14 @@ interface IdService {
 
 }
 
-enum class HNPage {
-    TOP, NEW, BEST, ASK, SHOW, JOB;
+enum class HNPage(val id: Int) {
+    TOP(R.string.page_top),
+    NEW(R.string.page_new),
+    BEST(R.string.page_best),
+    ASK(R.string.page_ask),
+    SHOW(R.string.page_show),
+    JOB(R.string.page_job);
+
 
     fun toObservable(service: IdService): Observable<List<Long>> {
         return when (this) {

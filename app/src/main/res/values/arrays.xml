@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="pages">
+        <item>@string/page_top</item>
+        <item>@string/page_new</item>
+        <item>@string/page_best</item>
+        <item>@string/page_ask</item>
+        <item>@string/page_show</item>
+        <item>@string/page_job</item>
+    </string-array>
+
+</resources>

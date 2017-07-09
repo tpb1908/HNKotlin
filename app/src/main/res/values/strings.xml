@@ -5,4 +5,11 @@
 
     <string name="format_item_info">%1$s | %2$s | %3$s</string>
 
+    <string name="page_top">Top</string>
+    <string name="page_new">New</string>
+    <string name="page_best">Best</string>
+    <string name="page_ask">Ask</string>
+    <string name="page_show">Show</string>
+    <string name="page_job">Job</string>
+
 </resources>

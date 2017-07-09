@@ -9,10 +9,29 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.widget.TextView
+import java.lang.Exception
 
 /**
  * Created by theo on 01/07/17.
  */
+
+class Extensions {
+
+    companion object {
+
+        fun getResId(resName: String, c: Class<out Any>): Int {
+            try {
+                val field = c.getDeclaredField(resName)
+                return field.getInt(field)
+            } catch (e: Exception) {
+                error("Error getting resource", e)
+                return -1
+            }
+        }
+
+    }
+
+}
 
 /**
  * Adds an [RecyclerView.OnScrollListener] to show or hide the FloatingActionButton when the RecyclerView scrolls up

@@ -34,7 +34,8 @@ class MainPresenter @Inject constructor(
     override fun setPageType(newPage: HNPage) {
         if (page != newPage) {
             page = newPage
-
+            view.showLoading()
+            refresh()
         }
     }
 
