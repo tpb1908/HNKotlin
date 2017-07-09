@@ -20,7 +20,7 @@ class App : Application() {
 
         netComponent = DaggerNetComponent.builder()
                 .appModule(AppModule(this))
-                .netModule(NetModule("https://hacker-news.firebaseio.com/v0/"))
+                .netModule(NetModule("https://hacker-news.firebaseio.com/v0/", "https://mercury.postlight.com"))
                 .build()
 
     }
