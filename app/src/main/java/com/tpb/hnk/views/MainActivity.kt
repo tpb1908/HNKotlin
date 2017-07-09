@@ -18,7 +18,6 @@ import com.tpb.hnk.R
 import com.tpb.hnk.data.services.HNPage
 import com.tpb.hnk.presenters.MainPresenter
 import com.tpb.hnk.presenters.MainViewContract
-import com.tpb.hnk.util.info
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -65,8 +64,18 @@ class MainActivity : AppCompatActivity(), MainViewContract {
         val searchMenu = action_menu_view.menu.findItem(R.id.search)
         searchView = searchMenu.actionView as SearchView
         searchView.setSearchableInfo((getSystemService(Context.SEARCH_SERVICE) as SearchManager).getSearchableInfo(componentName))
+        searchView.maxWidth = Integer.MAX_VALUE
 
-        searchView.setOnSearchClickListener { info("Search click") }
+
+        searchView.setOnSearchClickListener {
+            spinner.visibility = View.GONE
+        }
+
+
+        searchView.setOnCloseListener {
+            spinner.visibility = View.VISIBLE
+            false
+        }
 
         handleIntent(intent)
     }
@@ -89,5 +98,8 @@ class MainActivity : AppCompatActivity(), MainViewContract {
     override fun bindRecyclerViewAdapter(adapter: RecyclerView.Adapter<out RecyclerView.ViewHolder>) {
         recycler.adapter = adapter
     }
+
+
+
 
 }
