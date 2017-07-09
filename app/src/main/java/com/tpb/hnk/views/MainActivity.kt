@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity(), MainViewContract {
         (application as App).netComponent.inject(this)
         recycler.layoutManager = LinearLayoutManager(this)
         presenter.attachView(this)
+        refresher.setOnRefreshListener { presenter.refresh() }
     }
 
     override fun showLoading() {

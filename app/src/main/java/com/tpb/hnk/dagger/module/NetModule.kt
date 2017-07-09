@@ -7,13 +7,10 @@ import com.google.gson.GsonBuilder
 import com.tpb.hnk.data.services.IdService
 import com.tpb.hnk.data.services.ItemService
 import com.tpb.hnk.data.services.UserService
-import com.tpb.hnk.util.info
 import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -48,13 +45,7 @@ import javax.inject.Singleton
     fun provideOkHttpClient(cache: Cache): OkHttpClient {
         return OkHttpClient.Builder()
                 .cache(cache)
-                .addInterceptor(object: Interceptor {
-                    override fun intercept(chain: Interceptor.Chain): Response {
-                        val request = chain.request()
-                        info("Request for ${request.url()}")
-                        return chain.proceed(request)
-                    }
-                }).build()
+                .build()
     }
 
     @Provides

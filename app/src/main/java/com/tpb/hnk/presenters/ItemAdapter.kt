@@ -1,6 +1,12 @@
 package com.tpb.hnk.presenters
 
+import android.graphics.Color
+import android.graphics.Typeface
 import android.support.v7.widget.RecyclerView
+import android.text.SpannableString
+import android.text.format.DateUtils
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +22,7 @@ class ItemAdapter(val loader: ItemLoader) : RecyclerView.Adapter<ItemAdapter.Ite
 
     var recycler: RecyclerView? = null
     var emptyText: String? = null
+    var infoFormat: String = ""
 
     var data = ArrayList<Pair<Long, HNItem?>>(0)
 
@@ -39,6 +46,7 @@ class ItemAdapter(val loader: ItemLoader) : RecyclerView.Adapter<ItemAdapter.Ite
         super.onAttachedToRecyclerView(recyclerView)
         recycler = recyclerView
         emptyText = recycler?.context?.getString(R.string.empty_text)
+        infoFormat = recycler?.context?.getString(R.string.format_item_info) ?: infoFormat
     }
 
 
@@ -52,15 +60,19 @@ class ItemAdapter(val loader: ItemLoader) : RecyclerView.Adapter<ItemAdapter.Ite
             loader.loadItem(item.first)
 
             holder.title.text = emptyText
-            holder.username.text = emptyText
-            holder.domain.text = null
-            holder.time.text = null
+            holder.info.text = emptyText
             holder.comments.text = emptyText
 
         } else {
             holder.title.text = item.second?.title
-            holder.username.text = item.second?.by
-            holder.domain.text = item.second?.domain()
+            val info = SpannableString(String.format(infoFormat, item.second?.by,
+                    item.second?.domain(),
+                    DateUtils.getRelativeTimeSpanString(1000 * (item.second?.time?: 0))))
+            info.setSpan(ForegroundColorSpan(Color.MAGENTA), 0, item.second?.by?.length ?: 0, 0)
+            info.setSpan(StyleSpan(Typeface.BOLD), 0, item.second?.by?.length ?: 0, 0)
+            holder.info.text = info
+
+
             holder.comments.text = item.second?.descendants.toString()
         }
     }
@@ -71,9 +83,7 @@ class ItemAdapter(val loader: ItemLoader) : RecyclerView.Adapter<ItemAdapter.Ite
 
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val title: TextView = view.title
-        val username: TextView = view.user
-        val domain: TextView = view.domain
-        val time: TextView = view.time
+        val info: TextView = view.info
         val comments: TextView = view.comments
 
     }

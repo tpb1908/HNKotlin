@@ -18,39 +18,20 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             tools:text="Some title for an article"/>
 
-        <LinearLayout
-            android:id="@+id/info_layout"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/info"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:layout_below="@+id/title">
-
-            <TextView
-                android:id="@+id/user"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Username"/>
-
-            <TextView
-                android:id="@+id/domain"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="foo.bar"/>
-
-            <TextView
-                android:id="@+id/time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="A long time ago"/>
-
-        </LinearLayout>
+            android:layout_below="@+id/title"
+            tools:text="Username | (foo.bar.com) | A long time ago"/>
 
         <TextView
             android:id="@+id/comments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/info_layout"
+            android:layout_below="@+id/info"
             tools:text="123 comments"/>
 
     </RelativeLayout>

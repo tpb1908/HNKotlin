@@ -64,62 +64,62 @@ fun String.occurrencesOf(ch: Char): Int = this.count { it == ch }
 //Utilities for logging functions. Using class simple name as tag
 
 
-fun Any.debug(message: String) {
+fun Any.debug(message: String?) {
     Log.d(this::class.java.simpleName, message)
 }
 
-fun Any.debug(message: String, tr: Throwable) {
+fun Any.debug(message: String?, tr: Throwable?) {
     Log.d(this::class.java.simpleName, message, tr)
 }
 
 
-fun Any.error(message: String) {
+fun Any.error(message: String?) {
     Log.e(this::class.java.simpleName, message)
 }
 
-fun Any.error(message: String, tr: Throwable) {
+fun Any.error(message: String?, tr: Throwable?) {
     Log.e(this::class.java.simpleName, message, tr)
 }
 
-fun Any.info(message: String) {
+fun Any.info(message: String?) {
     Log.i(this::class.java.simpleName, message)
 }
 
-fun Any.info(message: String, tr: Throwable) {
+fun Any.info(message: String?, tr: Throwable?) {
     Log.i(this::class.java.simpleName, message, tr)
 }
 
-fun Any.verbose(message: String) {
+fun Any.verbose(message: String?) {
     Log.v(this::class.java.simpleName, message)
 }
 
 
-fun Any.verbose(message: String, tr: Throwable) {
+fun Any.verbose(message: String?, tr: Throwable?) {
     Log.v(this::class.java.simpleName, message, tr)
 }
 
-fun Any.warn(message: String) {
+fun Any.warn(message: String?) {
     Log.w(this::class.java.simpleName, message)
 }
 
 
-fun Any.warn(message: String, tr: Throwable) {
+fun Any.warn(message: String?, tr: Throwable?) {
     Log.w(this::class.java.simpleName, message, tr)
 }
 
-fun Any.warn(tr: Throwable) {
+fun Any.warn(tr: Throwable?) {
     Log.w(this::class.java.simpleName, tr)
 }
 
-fun Any.wtf(message: String) {
+fun Any.wtf(message: String?) {
     Log.wtf(this::class.java.simpleName, message)
 }
 
 
-fun Any.wtf(message: String, tr: Throwable) {
+fun Any.wtf(message: String?, tr: Throwable?) {
     Log.wtf(this::class.java.simpleName, message, tr)
 }
 
-fun Any.wtf(tr: Throwable) {
+fun Any.wtf(tr: Throwable?) {
     Log.wtf(this::class.java.simpleName, tr)
 }
