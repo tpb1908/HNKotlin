@@ -7,4 +7,6 @@ interface MainPresenterContract {
 
     fun loadItems()
 
+    fun refresh()
+
 }

@@ -7,6 +7,6 @@ package com.tpb.hnk.presenters
 interface Presenter<in T> {
 
     //Could be called setView, but that interferes with Kotlin
-    fun bindView(view: T)
+    fun attachView(view: T)
 
 }
