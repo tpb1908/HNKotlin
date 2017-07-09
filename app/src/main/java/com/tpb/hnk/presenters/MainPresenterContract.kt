@@ -10,4 +10,10 @@ interface MainPresenterContract {
     fun refresh()
 
     fun setPageType(newPage: HNPage)
+
+    fun onQueryTextChange(query: String)
+
+    fun onQueryTextSubmitted(query: String)
+
+
 }

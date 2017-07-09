@@ -66,16 +66,20 @@ class MainActivity : AppCompatActivity(), MainViewContract {
         searchView.setSearchableInfo((getSystemService(Context.SEARCH_SERVICE) as SearchManager).getSearchableInfo(componentName))
         searchView.maxWidth = Integer.MAX_VALUE
 
+        searchView.setOnSearchClickListener { spinner.visibility = View.GONE }
+        searchView.setOnCloseListener { spinner.visibility = View.VISIBLE; false }
 
-        searchView.setOnSearchClickListener {
-            spinner.visibility = View.GONE
-        }
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String): Boolean {
+                presenter.onQueryTextSubmitted(p0)
+                return true
+            }
 
-
-        searchView.setOnCloseListener {
-            spinner.visibility = View.VISIBLE
-            false
-        }
+            override fun onQueryTextChange(p0: String): Boolean {
+                presenter.onQueryTextChange(p0)
+                return true
+            }
+        })
 
         handleIntent(intent)
     }
@@ -98,8 +102,5 @@ class MainActivity : AppCompatActivity(), MainViewContract {
     override fun bindRecyclerViewAdapter(adapter: RecyclerView.Adapter<out RecyclerView.ViewHolder>) {
         recycler.adapter = adapter
     }
-
-
-
 
 }

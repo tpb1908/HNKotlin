@@ -14,6 +14,7 @@ class App : Application() {
     lateinit var netComponent: NetComponent
         private set
 
+
     override fun onCreate() {
         super.onCreate()
 

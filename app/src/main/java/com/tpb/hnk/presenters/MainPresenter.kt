@@ -43,6 +43,18 @@ class MainPresenter @Inject constructor(
         }
     }
 
+    override fun refresh() {
+        info("Refreshing")
+        loadIds(page.toObservable(idService))
+    }
+
+
+    override fun onQueryTextChange(query: String) {
+    }
+
+    override fun onQueryTextSubmitted(query: String) {
+    }
+
     private fun loadIds(obs: Observable<List<Long>>) {
         idRequests.clear()
         itemRequests.clear()
@@ -69,10 +81,6 @@ class MainPresenter @Inject constructor(
                 })
     }
 
-    override fun refresh() {
-        info("Refreshing")
-        loadIds(page.toObservable(idService))
-    }
 
 
     override fun loadRange(ids: LongArray) {
