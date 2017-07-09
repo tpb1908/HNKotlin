@@ -10,6 +10,7 @@
         <item quantity="other">%d comments</item>
     </plurals>
 
+    <string name="page">Page</string>
     <string name="page_top">Top</string>
     <string name="page_new">New</string>
     <string name="page_best">Best</string>
@@ -22,6 +23,9 @@
     <string name="type_comment">Comment</string>
     <string name="type_poll">Poll</string>
     <string name="type_pollopt">Pollopt</string>
+
+    <string name="search_title">Search</string>
+    <string name="search_hint">Search HackerNews</string>
 
 </resources>
 

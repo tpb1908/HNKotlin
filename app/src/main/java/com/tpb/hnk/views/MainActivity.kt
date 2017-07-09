@@ -1,5 +1,8 @@
 package com.tpb.hnk.views
 
+import android.app.SearchManager
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
@@ -8,12 +11,14 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.SearchView
 import android.widget.Spinner
 import com.tpb.hnk.App
 import com.tpb.hnk.R
 import com.tpb.hnk.data.services.HNPage
 import com.tpb.hnk.presenters.MainPresenter
 import com.tpb.hnk.presenters.MainViewContract
+import com.tpb.hnk.util.info
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -26,6 +31,7 @@ class MainActivity : AppCompatActivity(), MainViewContract {
     @Inject lateinit var presenter: MainPresenter
 
     lateinit var spinner: Spinner
+    lateinit var searchView: SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +62,20 @@ class MainActivity : AppCompatActivity(), MainViewContract {
             override fun onNothingSelected(p0: AdapterView<*>?) {}
         }
 
+        val searchMenu = action_menu_view.menu.findItem(R.id.search)
+        searchView = searchMenu.actionView as SearchView
+        searchView.setSearchableInfo((getSystemService(Context.SEARCH_SERVICE) as SearchManager).getSearchableInfo(componentName))
+
+        searchView.setOnSearchClickListener { info("Search click") }
+
+        handleIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent) {
+        if (Intent.ACTION_SEARCH == intent.action) {
+            val query = intent.getStringExtra(SearchManager.QUERY)
+            //TODO Do something with the query
+        }
     }
 
     override fun showLoading() {
@@ -63,7 +83,7 @@ class MainActivity : AppCompatActivity(), MainViewContract {
     }
 
     override fun hideLoading() {
-       runOnUiThread { refresher.isRefreshing = false }
+       runOnUiThread { refresher.isRefreshing = false}
     }
 
     override fun bindRecyclerViewAdapter(adapter: RecyclerView.Adapter<out RecyclerView.ViewHolder>) {
