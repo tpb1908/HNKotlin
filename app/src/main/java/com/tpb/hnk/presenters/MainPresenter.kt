@@ -1,5 +1,6 @@
 package com.tpb.hnk.presenters
 
+import android.app.Application
 import com.tpb.hnk.data.services.HNPage
 import com.tpb.hnk.data.services.IdService
 import com.tpb.hnk.data.services.ItemService
@@ -7,6 +8,7 @@ import com.tpb.hnk.util.error
 import com.tpb.hnk.util.info
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -17,12 +19,14 @@ import javax.inject.Singleton
 @Singleton
 class MainPresenter @Inject constructor(
         private val idService: IdService,
-        private val itemService: ItemService) : Presenter<MainViewContract>, MainPresenterContract, ItemLoader {
+        private val itemService: ItemService,
+        private val application: Application) : Presenter<MainViewContract>, MainPresenterContract, ItemLoader {
 
     lateinit var view: MainViewContract
-    val adapter = ItemAdapter(this)
+    val adapter = ItemAdapter(this, application.resources)
     var page = HNPage.TOP
-
+    val idRequests = CompositeDisposable()
+    val itemRequests = CompositeDisposable()
 
     override fun attachView(view: MainViewContract) {
         this.view = view
@@ -40,9 +44,11 @@ class MainPresenter @Inject constructor(
     }
 
     private fun loadIds(obs: Observable<List<Long>>) {
-        obs.subscribeOn(Schedulers.newThread())
+        idRequests.clear()
+        itemRequests.clear()
+        idRequests.add(obs.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::dispatchIds, this::handleIdLoadError)
+                .subscribe(this::dispatchIds, this::handleIdLoadError))
     }
 
     private fun dispatchIds(ids: List<Long>) {
@@ -56,11 +62,11 @@ class MainPresenter @Inject constructor(
     }
 
     override fun loadItem(id: Long) {
-        itemService.getItem(id)
+        itemRequests.add(itemService.getItem(id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     adapter.receiveItem(it)
-                }
+                })
     }
 
     override fun refresh() {

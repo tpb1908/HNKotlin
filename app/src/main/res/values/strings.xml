@@ -4,6 +4,11 @@
     <string name="empty_text">…</string>
 
     <string name="format_item_info">%1$s | %2$s | %3$s</string>
+    <plurals name="plural_comments">
+        <item quantity="zero">No comments</item>
+        <item quantity="one">One comment</item>
+        <item quantity="other">%d comments</item>
+    </plurals>
 
     <string name="page_top">Top</string>
     <string name="page_new">New</string>
@@ -12,4 +17,11 @@
     <string name="page_show">Show</string>
     <string name="page_job">Job</string>
 
+    <string name="type_story">Story</string>
+    <string name="type_job">Job</string>
+    <string name="type_comment">Comment</string>
+    <string name="type_poll">Poll</string>
+    <string name="type_pollopt">Pollopt</string>
+
 </resources>
+

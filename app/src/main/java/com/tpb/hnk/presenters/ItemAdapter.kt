@@ -1,6 +1,6 @@
 package com.tpb.hnk.presenters
 
-import android.graphics.Color
+import android.content.res.Resources
 import android.graphics.Typeface
 import android.support.v7.widget.RecyclerView
 import android.text.SpannableString
@@ -13,16 +13,17 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.tpb.hnk.R
 import com.tpb.hnk.data.models.HNItem
+import com.tpb.hnk.util.info
 import kotlinx.android.synthetic.main.viewholder_item.view.*
 
 /**
  * Created by theo on 09/07/17.
  */
-class ItemAdapter(val loader: ItemLoader) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>(), ItemReceiver {
+class ItemAdapter(val loader: ItemLoader, val resources: Resources) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>(), ItemReceiver {
 
     var recycler: RecyclerView? = null
-    var emptyText: String? = null
-    var infoFormat: String = ""
+    val emptyText: String = resources.getString(R.string.empty_text)
+    val infoFormat: String = resources.getString(R.string.format_item_info)
 
     var data = ArrayList<Pair<Long, HNItem?>>(0)
 
@@ -45,8 +46,6 @@ class ItemAdapter(val loader: ItemLoader) : RecyclerView.Adapter<ItemAdapter.Ite
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         recycler = recyclerView
-        emptyText = recycler?.context?.getString(R.string.empty_text)
-        infoFormat = recycler?.context?.getString(R.string.format_item_info) ?: infoFormat
     }
 
 
@@ -66,14 +65,20 @@ class ItemAdapter(val loader: ItemLoader) : RecyclerView.Adapter<ItemAdapter.Ite
         } else {
             holder.title.text = item.second?.title
             val info = SpannableString(String.format(infoFormat, item.second?.by,
-                    item.second?.domain(),
+                    item.second?.domain(resources),
                     DateUtils.getRelativeTimeSpanString(1000 * (item.second?.time?: 0))))
-            info.setSpan(ForegroundColorSpan(Color.MAGENTA), 0, item.second?.by?.length ?: 0, 0)
+            info.setSpan(ForegroundColorSpan(resources.getColor(R.color.colorAccent)), 0, item.second?.by?.length ?: 0, 0)
             info.setSpan(StyleSpan(Typeface.BOLD), 0, item.second?.by?.length ?: 0, 0)
             holder.info.text = info
 
 
-            holder.comments.text = item.second?.descendants.toString()
+            holder.comments.text =resources.getQuantityString(
+                    R.plurals.plural_comments,
+                    item.second?.descendants ?: 0,
+                    item.second?.descendants)
+        }
+        holder.itemView.setOnClickListener {
+            info(item.second?.toString())
         }
     }
 

@@ -3,7 +3,10 @@ package com.tpb.hnk.data.models
 /**
  * Created by theo on 08/07/17.
  */
+import android.content.res.Resources
+import android.support.annotation.StringRes
 import com.google.gson.annotations.SerializedName
+import com.tpb.hnk.R
 import java.lang.Exception
 import java.net.URL
 
@@ -25,15 +28,18 @@ data class HNItem(
         @SerializedName("score") var score: Long,
         @SerializedName("title") var title: String,
         @SerializedName("parts") var parts: LongArray,
-        @SerializedName("descendants") var descendants: Long
-
+        @SerializedName("descendants") var descendants: Int
 ) {
 
-    fun domain(): String? {
-        try {
-            return URL(url).host
-        } catch (e: Exception) {
-            return null
+    fun domain(res: Resources): String? {
+        if (type == ItemType.STORY) {
+            try {
+                return URL(url).host
+            } catch (e: Exception) {
+                return res.getString(R.string.type_story)
+            }
+        } else {
+            return res.getString(type.id)
         }
     }
 
@@ -50,6 +56,10 @@ data class HNItem(
     }
 }
 
-enum class ItemType {
-    STORY, JOB, COMMENT, POLL, POLLOPT
+enum class ItemType(@StringRes val id: Int) {
+    @SerializedName("story") STORY(R.string.type_story),
+    @SerializedName("job") JOB(R.string.type_job),
+    @SerializedName("comment") COMMENT(R.string.type_comment),
+    @SerializedName("poll") POLL(R.string.type_poll),
+    @SerializedName("pollopt") POLLOPT(R.string.type_pollopt)
 }

@@ -1,5 +1,6 @@
 package com.tpb.hnk.data.services
 
+import android.support.annotation.StringRes
 import com.tpb.hnk.R
 import io.reactivex.Observable
 import retrofit2.http.GET
@@ -32,7 +33,7 @@ interface IdService {
 
 }
 
-enum class HNPage(val id: Int) {
+enum class HNPage(@StringRes val id: Int) {
     TOP(R.string.page_top),
     NEW(R.string.page_new),
     BEST(R.string.page_best),

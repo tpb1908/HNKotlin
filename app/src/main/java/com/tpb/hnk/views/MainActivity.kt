@@ -2,6 +2,7 @@ package com.tpb.hnk.views
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -32,12 +33,13 @@ class MainActivity : AppCompatActivity(), MainViewContract {
         (application as App).netComponent.inject(this)
 
         recycler.layoutManager = LinearLayoutManager(this)
+        recycler.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+
         presenter.attachView(this)
 
         refresher.setOnRefreshListener { presenter.refresh() }
 
         menuInflater.inflate(R.menu.menu_main, action_menu_view.menu)
-
 
         setSupportActionBar(toolbar)
         supportActionBar?.title = null
