@@ -9,10 +9,7 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.SearchView
-import android.widget.Spinner
+import android.widget.*
 import com.tpb.hnk.App
 import com.tpb.hnk.R
 import com.tpb.hnk.data.services.HNPage
@@ -30,6 +27,7 @@ class MainActivity : AppCompatActivity(), MainViewContract {
     @Inject lateinit var presenter: MainPresenter
 
     lateinit var spinner: Spinner
+    lateinit var filter: ImageButton
     lateinit var searchView: SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +47,9 @@ class MainActivity : AppCompatActivity(), MainViewContract {
         setSupportActionBar(toolbar)
         supportActionBar?.title = null
 
-        spinner = action_menu_view.menu.findItem(R.id.spinner).actionView as Spinner
+        val optionMenu = action_menu_view.menu.findItem(R.id.spinner)
+
+        spinner = optionMenu.actionView as Spinner
         val ids = HNPage.values()
         spinner.adapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, ids.map { getString(it.id) })
 
@@ -62,12 +62,23 @@ class MainActivity : AppCompatActivity(), MainViewContract {
         }
 
         val searchMenu = action_menu_view.menu.findItem(R.id.search)
+
         searchView = searchMenu.actionView as SearchView
         searchView.setSearchableInfo((getSystemService(Context.SEARCH_SERVICE) as SearchManager).getSearchableInfo(componentName))
         searchView.maxWidth = Integer.MAX_VALUE
 
-        searchView.setOnSearchClickListener { spinner.visibility = View.GONE }
-        searchView.setOnCloseListener { spinner.visibility = View.VISIBLE; false }
+        filter = ImageButton(this)
+        filter.setBackgroundColor(android.R.color.transparent)
+        filter.setImageResource(R.drawable.ic_filter_list_black)
+
+        searchView.setOnSearchClickListener {
+            optionMenu.actionView = filter
+        }
+
+        searchView.setOnCloseListener {
+            optionMenu.actionView = spinner
+            false
+        }
 
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String): Boolean {
@@ -81,8 +92,10 @@ class MainActivity : AppCompatActivity(), MainViewContract {
             }
         })
 
+
         handleIntent(intent)
     }
+
 
     private fun handleIntent(intent: Intent) {
         if (Intent.ACTION_SEARCH == intent.action) {

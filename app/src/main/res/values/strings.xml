@@ -26,6 +26,7 @@
 
     <string name="search_title">Search</string>
     <string name="search_hint">Search HackerNews</string>
+    <string name="search_filter_title">Filter</string>
 
 </resources>
 
