@@ -12,11 +12,14 @@ import io.reactivex.Flowable
  */
 @Dao interface ItemDao {
 
-    @Query("SELECT * FROM items")
+    @Query("SELECT * FROM hnitem")
     fun getAllItems(): Flowable<List<HNItem>>
 
+    @Query("DELETE FROM hnitem WHERE time < :time")
+    fun deleteOlderThan(time: Long)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertItem(item: HNItem): Long
+    fun insertItem(item: HNItem)
 
 
 }

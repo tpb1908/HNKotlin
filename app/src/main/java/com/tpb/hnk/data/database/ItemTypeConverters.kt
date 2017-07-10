@@ -8,25 +8,25 @@ import com.tpb.hnk.data.models.ItemType
  */
 class ItemTypeConverters {
 
-    @TypeConverter fun longArrayToString(array: List<Long>): String {
-        return array.joinToString(transform = { it.toString() }, separator = ",")
+    @TypeConverter fun longArrayToString(array: List<Long>?): String {
+        return array?.joinToString(transform = { it.toString() }, separator = ",") ?: ""
     }
 
-    @TypeConverter fun stringToLongArray(array: String): List<Long> {
-        return array.split(",").map { it.toLong() }
+    @TypeConverter fun stringToLongArray(array: String?): List<Long> {
+        return array?.split(",")?.map { if (it.isEmpty()) 0 else it.toLong() } ?: listOf()
     }
 
-    @TypeConverter fun itemTypeToString(type: ItemType): String {
+    @TypeConverter fun itemTypeToString(type: ItemType?): String {
         return when (type) {
             ItemType.COMMENT -> "comment"
             ItemType.JOB -> "job"
             ItemType.POLL -> "poll"
             ItemType.POLLOPT -> "pollopt"
-            ItemType.STORY -> "story"
+            else -> "story"
         }
     }
 
-    @TypeConverter fun stringToItemType(type: String): ItemType {
+    @TypeConverter fun stringToItemType(type: String?): ItemType {
         return when (type) {
             "comment" -> ItemType.COMMENT
             "job" -> ItemType.JOB

@@ -9,10 +9,8 @@ import com.tpb.hnk.data.services.ItemService
 import com.tpb.hnk.util.error
 import com.tpb.hnk.util.info
 import io.reactivex.Observable
-import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -80,19 +78,6 @@ class MainPresenter @Inject constructor(
     }
 
     override fun loadItem(id: Long) {
-        itemService.getItem(id).subscribe(object: Observer<HNItem> {
-            override fun onNext(t: HNItem) {
-            }
-
-            override fun onError(e: Throwable) {
-            }
-
-            override fun onComplete() {
-            }
-
-            override fun onSubscribe(d: Disposable) {
-            }
-        })
 
         itemRequests.add(itemService.getItem(id)
                 .observeOn(AndroidSchedulers.mainThread())
