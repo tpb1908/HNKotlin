@@ -25,7 +25,7 @@ import javax.inject.Singleton
 class MainPresenter @Inject constructor(
         private val idService: IdService,
         private val itemService: ItemService,
-        private val persistor: Persistor,
+        private val persistor: Persistor<HNItem>,
         private val application: Application) : Presenter<MainViewContract>, MainPresenterContract, ItemLoader {
 
     lateinit var view: MainViewContract

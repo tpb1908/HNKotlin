@@ -1,22 +1,22 @@
 package com.tpb.hnk.data.database
 
-import com.tpb.hnk.data.models.HNItem
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 /**
  * Created by theo on 10/07/17.
  */
-class Persistor(val database: Database) {
+class Persistor<T>(val persistor: (it: T) -> Any) {
 
-    val executor: ExecutorService = Executors.newSingleThreadExecutor()
+    companion object {
+        val executor: ExecutorService = Executors.newCachedThreadPool()
+    }
 
-    inline fun persist(crossinline onNext: (i: HNItem) -> Unit): (i: HNItem) -> Unit {
+    fun persist(onNext: (param: T) -> Unit): (i: T) -> Unit {
         return {
-            executor.submit { database.itemDao().insertItem(it) }
+            executor.submit { persistor(it) }
             onNext(it)
         }
     }
-
 
 }

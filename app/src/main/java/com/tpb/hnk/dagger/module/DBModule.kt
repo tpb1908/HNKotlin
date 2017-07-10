@@ -6,6 +6,7 @@ import android.content.Context
 import com.tpb.hnk.data.database.Database
 import com.tpb.hnk.data.database.ItemDao
 import com.tpb.hnk.data.database.Persistor
+import com.tpb.hnk.data.models.HNItem
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -32,8 +33,8 @@ import javax.inject.Singleton
 
     @Provides
     @Singleton
-    fun providePersistor(database: Database): Persistor {
-        return Persistor(database)
+    fun providePersistor(database: Database): Persistor<HNItem> {
+        return Persistor(database.itemDao()::insertItem)
     }
 
 }
