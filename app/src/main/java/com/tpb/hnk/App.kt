@@ -4,6 +4,7 @@ import android.app.Application
 import com.tpb.hnk.dagger.component.DaggerMainComponent
 import com.tpb.hnk.dagger.component.MainComponent
 import com.tpb.hnk.dagger.module.AppModule
+import com.tpb.hnk.dagger.module.DBModule
 import com.tpb.hnk.dagger.module.NetModule
 
 /**
@@ -21,6 +22,7 @@ class App : Application() {
         netComponent = DaggerMainComponent.builder()
                 .appModule(AppModule(this))
                 .netModule(NetModule("https://hacker-news.firebaseio.com/v0/", "https://mercury.postlight.com"))
+                .dBModule(DBModule(this, packageName, arrayOf()))
                 .build()
 
     }

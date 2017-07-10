@@ -11,6 +11,7 @@ import com.tpb.hnk.data.services.MercuryService
 import com.tpb.hnk.data.services.UserService
 import dagger.Module
 import dagger.Provides
+import io.reactivex.internal.schedulers.RxThreadFactory
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
