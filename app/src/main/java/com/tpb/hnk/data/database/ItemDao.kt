@@ -2,6 +2,7 @@ package com.tpb.hnk.data.database
 
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
+import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 import com.tpb.hnk.data.models.HNItem
 import io.reactivex.Flowable
@@ -14,7 +15,7 @@ import io.reactivex.Flowable
     @Query("SELECT * FROM items")
     fun getAllItems(): Flowable<List<HNItem>>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertItem(item: HNItem): Long
 
 
