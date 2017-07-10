@@ -6,7 +6,7 @@
     <string name="format_item_info">%1$s | %2$s | %3$s</string>
     <plurals name="plural_comments">
         <item quantity="zero">No comments</item>
-        <item quantity="one">One comment</item>
+        <item quantity="one">1 comment</item>
         <item quantity="other">%d comments</item>
     </plurals>
 
