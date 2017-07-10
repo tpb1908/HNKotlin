@@ -1,8 +1,8 @@
 package com.tpb.hnk
 
 import android.app.Application
-import com.tpb.hnk.dagger.component.DaggerNetComponent
-import com.tpb.hnk.dagger.component.NetComponent
+import com.tpb.hnk.dagger.component.DaggerMainComponent
+import com.tpb.hnk.dagger.component.MainComponent
 import com.tpb.hnk.dagger.module.AppModule
 import com.tpb.hnk.dagger.module.NetModule
 
@@ -11,14 +11,14 @@ import com.tpb.hnk.dagger.module.NetModule
  */
 class App : Application() {
 
-    lateinit var netComponent: NetComponent
+    lateinit var netComponent: MainComponent
         private set
 
 
     override fun onCreate() {
         super.onCreate()
 
-        netComponent = DaggerNetComponent.builder()
+        netComponent = DaggerMainComponent.builder()
                 .appModule(AppModule(this))
                 .netModule(NetModule("https://hacker-news.firebaseio.com/v0/", "https://mercury.postlight.com"))
                 .build()

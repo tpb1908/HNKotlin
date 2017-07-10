@@ -3,18 +3,21 @@ package com.tpb.hnk.data.models
 /**
  * Created by theo on 08/07/17.
  */
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.PrimaryKey
 import android.content.res.Resources
 import android.support.annotation.StringRes
 import com.google.gson.annotations.SerializedName
 import com.tpb.hnk.R
+import io.mironov.smuggler.AutoParcelable
 import java.lang.Exception
 import java.net.URL
 
 /**
  * Created by theo on 08/07/17.
  */
-data class HNItem(
-        @SerializedName("id") var id: Long,
+@Entity(tableName = "items") data class HNItem(
+        @SerializedName("id") @PrimaryKey var id: Long,
         @SerializedName("deleted") var deleted: Boolean,
         @SerializedName("type") var type: ItemType,
         @SerializedName("by") var by: String,
@@ -23,13 +26,13 @@ data class HNItem(
         @SerializedName("dead") var dead: Boolean,
         @SerializedName("parent") var parent: Long,
         @SerializedName("poll") var poll: Long,
-        @SerializedName("kids") var kids: LongArray,
+        @SerializedName("kids") var kids: List<Long>,
         @SerializedName("url") var url: String,
-        @SerializedName("score") var score: Long,
+        @SerializedName(value = "score", alternate = arrayOf("points")) var score: Long,
         @SerializedName("title") var title: String,
-        @SerializedName("parts") var parts: LongArray,
+        @SerializedName("parts") var parts: List<Long>,
         @SerializedName("descendants") var descendants: Int
-) {
+) : AutoParcelable {
 
     fun domain(res: Resources): String? {
         if (type == ItemType.STORY) {

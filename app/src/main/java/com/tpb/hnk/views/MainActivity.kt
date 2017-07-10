@@ -46,12 +46,20 @@ class MainActivity : AppCompatActivity(), MainViewContract {
 
         setSupportActionBar(toolbar)
         supportActionBar?.title = null
+        bindMenuItems()
 
+
+
+        handleIntent(intent)
+    }
+
+    private fun bindMenuItems() {
         val optionMenu = action_menu_view.menu.findItem(R.id.spinner)
 
         spinner = optionMenu.actionView as Spinner
         val ids = HNPage.values()
         spinner.adapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, ids.map { getString(it.id) })
+
 
         spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, view: View, pos: Int, id: Long) {
@@ -91,9 +99,6 @@ class MainActivity : AppCompatActivity(), MainViewContract {
                 return true
             }
         })
-
-
-        handleIntent(intent)
     }
 
 
