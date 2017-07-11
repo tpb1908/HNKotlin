@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.*
+import com.irozon.sneaker.Sneaker
 import com.tpb.hnk.App
 import com.tpb.hnk.R
 import com.tpb.hnk.data.services.HNPage
@@ -115,6 +116,14 @@ class MainActivity : AppCompatActivity(), MainViewContract {
 
     override fun hideLoading() {
        runOnUiThread { refresher.isRefreshing = false}
+    }
+
+    override fun showError(errorRes: Int) {
+        Sneaker.with(this)
+                .setTitle("Test")
+                .setMessage(getString(errorRes))
+                .sneakError()
+
     }
 
     override fun bindRecyclerViewAdapter(adapter: RecyclerView.Adapter<out RecyclerView.ViewHolder>) {

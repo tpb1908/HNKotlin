@@ -1,6 +1,7 @@
 package com.tpb.hnk.dagger.module
 
 import android.app.Application
+import android.content.Context
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -9,9 +10,9 @@ import com.tpb.hnk.data.services.IdService
 import com.tpb.hnk.data.services.ItemService
 import com.tpb.hnk.data.services.MercuryService
 import com.tpb.hnk.data.services.UserService
+import com.tpb.hnk.util.ConnectivityListener
 import dagger.Module
 import dagger.Provides
-import io.reactivex.internal.schedulers.RxThreadFactory
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -23,7 +24,13 @@ import javax.inject.Singleton
 /**
  * Created by theo on 08/07/17.
  */
-@Module class NetModule(val hnBaseUrl: String, val mercuryBaseUrl: String) {
+@Module class NetModule(val context: Context, val hnBaseUrl: String, val mercuryBaseUrl: String) {
+
+    @Provides
+    @Singleton
+    fun provideConnectivityListener(): ConnectivityListener {
+        return ConnectivityListener(context)
+    }
 
     @Provides
     @Singleton

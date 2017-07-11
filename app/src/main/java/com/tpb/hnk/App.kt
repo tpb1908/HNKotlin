@@ -19,13 +19,11 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-
         netComponent = DaggerMainComponent.builder()
                 .appModule(AppModule(this))
-                .netModule(NetModule("https://hacker-news.firebaseio.com/v0/", "https://mercury.postlight.com"))
+                .netModule(NetModule(this, "https://hacker-news.firebaseio.com/v0/", "https://mercury.postlight.com"))
                 .dBModule(DBModule(this, packageName, arrayOf()))
-                .loaderModule(LoaderModule(this))
+                .loaderModule(LoaderModule())
                 .build()
-
     }
 }

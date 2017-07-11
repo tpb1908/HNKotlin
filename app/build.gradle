@@ -77,6 +77,8 @@ dependencies {
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0-alpha3"
     kapt "android.arch.persistence.room:compiler:1.0.0-alpha3"
 
+    compile 'com.irozon.sneaker:sneaker:1.0.1'
+
     //State saving
     //compile 'com.evernote:android-state:1.1.1'
     //kapt 'com.evernote:android-state-processor:1.1.1'

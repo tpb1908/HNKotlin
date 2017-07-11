@@ -1,5 +1,6 @@
 package com.tpb.hnk.presenters
 
+import android.support.annotation.StringRes
 import android.support.v7.widget.RecyclerView
 
 /**
@@ -10,6 +11,8 @@ interface MainViewContract {
     fun showLoading()
 
     fun hideLoading()
+
+    fun showError(@StringRes errorRes: Int)
 
     fun bindRecyclerViewAdapter(adapter: RecyclerView.Adapter<out RecyclerView.ViewHolder>)
 
