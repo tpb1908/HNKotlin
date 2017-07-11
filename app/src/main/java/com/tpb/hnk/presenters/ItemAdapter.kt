@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.tpb.hnk.R
+import com.tpb.hnk.data.ItemLoader
 import com.tpb.hnk.data.models.HNItem
 import com.tpb.hnk.util.info
 import kotlinx.android.synthetic.main.viewholder_item.view.*
@@ -95,13 +96,6 @@ class ItemAdapter(val loader: ItemLoader, val resources: Resources) : RecyclerVi
 
 }
 
-interface ItemLoader {
-
-    fun loadRange(ids: LongArray)
-
-    fun loadItem(id: Long)
-
-}
 
 interface ItemReceiver {
 

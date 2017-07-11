@@ -34,6 +34,7 @@ import javax.inject.Singleton
     @Provides
     @Singleton
     fun providePersistor(database: Database): Persistor<HNItem> {
+        //database.itemDao().getAllItems().toObservable().flatMap { Observable.fromIterable(it) }
         return Persistor(database.itemDao()::insertItem)
     }
 

@@ -1,17 +1,15 @@
 package com.tpb.hnk.presenters
 
 import android.app.Application
-import com.tpb.hnk.data.database.Persistor
-import com.tpb.hnk.data.models.HNItem
+import com.tpb.hnk.data.ItemLoader
+import com.tpb.hnk.data.Loader
 import com.tpb.hnk.data.services.HNPage
 import com.tpb.hnk.data.services.IdService
-import com.tpb.hnk.data.services.ItemService
 import com.tpb.hnk.util.error
 import com.tpb.hnk.util.info
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -22,15 +20,15 @@ import javax.inject.Singleton
 @Singleton
 class MainPresenter @Inject constructor(
         private val idService: IdService,
-        private val itemService: ItemService,
-        private val persistor: Persistor<HNItem>,
-        private val application: Application) : Presenter<MainViewContract>, MainPresenterContract, ItemLoader {
+        private val application: Application,
+        private val loader: Loader) : Presenter<MainViewContract>, MainPresenterContract, ItemLoader {
 
     lateinit var view: MainViewContract
     val adapter = ItemAdapter(this, application.resources)
     var page = HNPage.TOP
     val idRequests = CompositeDisposable()
     val itemRequests = CompositeDisposable()
+
 
     override fun attachView(view: MainViewContract) {
         this.view = view
@@ -75,21 +73,12 @@ class MainPresenter @Inject constructor(
 
     private fun handleIdLoadError(err: Throwable) {
         error("Id load error", err)
+        view.hideLoading()
     }
 
     override fun loadItem(id: Long) {
-
-        itemRequests.add(itemService.getItem(id)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(
-                    onNext = persistor.persist { adapter.receiveItem(it) }
-                ))
+        itemRequests.add(loader.getItem(id, onNext = { adapter.receiveItem(it) }))
 
     }
 
-
-
-    override fun loadRange(ids: LongArray) {
-
-    }
 }
