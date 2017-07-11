@@ -22,7 +22,7 @@ class App : Application() {
         netComponent = DaggerMainComponent.builder()
                 .appModule(AppModule(this))
                 .netModule(NetModule(this, "https://hacker-news.firebaseio.com/v0/", "https://mercury.postlight.com"))
-                .dBModule(DBModule(this, packageName, arrayOf()))
+                .dBModule(DBModule(this, packageName))
                 .loaderModule(LoaderModule())
                 .build()
     }

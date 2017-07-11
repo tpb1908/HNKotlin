@@ -4,6 +4,7 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.annotation.StringRes
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -39,7 +40,6 @@ class MainActivity : AppCompatActivity(), MainViewContract {
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
 
-        presenter.attachView(this)
 
         refresher.setOnRefreshListener { presenter.refresh() }
 
@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity(), MainViewContract {
         supportActionBar?.title = null
         bindMenuItems()
 
-
+        presenter.attachView(this)
 
         handleIntent(intent)
     }
@@ -118,10 +118,10 @@ class MainActivity : AppCompatActivity(), MainViewContract {
        runOnUiThread { refresher.isRefreshing = false}
     }
 
-    override fun showError(errorRes: Int) {
+    override fun showError(@StringRes titleRes: Int, @StringRes messageRes: Int) {
         Sneaker.with(this)
-                .setTitle("Test")
-                .setMessage(getString(errorRes))
+                .setTitle(getString(titleRes))
+                .setMessage(getString(messageRes))
                 .sneakError()
 
     }

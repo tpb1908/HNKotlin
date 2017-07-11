@@ -65,15 +65,18 @@ class ItemAdapter(val loader: ItemLoader, val resources: Resources) : RecyclerVi
 
         } else {
             holder.title.text = item.second?.title
-            val info = SpannableString(String.format(infoFormat, item.second?.by,
-                    item.second?.domain(resources),
-                    DateUtils.getRelativeTimeSpanString(1000 * (item.second?.time?: 0))))
+            val info = SpannableString(
+                    String.format(infoFormat, item.second?.by,
+                        item.second?.domain(resources),
+                        DateUtils.getRelativeTimeSpanString(1000 * (item.second?.time?: 0))
+                )
+            )
             info.setSpan(ForegroundColorSpan(resources.getColor(R.color.colorAccent)), 0, item.second?.by?.length ?: 0, 0)
             info.setSpan(StyleSpan(Typeface.BOLD), 0, item.second?.by?.length ?: 0, 0)
             holder.info.text = info
 
 
-            holder.comments.text =resources.getQuantityString(
+            holder.comments.text = resources.getQuantityString(
                     R.plurals.plural_comments,
                     item.second?.descendants ?: 0,
                     item.second?.descendants)

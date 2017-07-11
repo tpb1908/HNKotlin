@@ -1,16 +1,16 @@
 package com.tpb.hnk.presenters
 
 import android.app.Application
+import com.tpb.hnk.R
 import com.tpb.hnk.data.ItemLoader
 import com.tpb.hnk.data.Loader
 import com.tpb.hnk.data.services.HNPage
 import com.tpb.hnk.data.services.IdService
+import com.tpb.hnk.util.ConnectivityAware
+import com.tpb.hnk.util.ConnectivityListener
 import com.tpb.hnk.util.error
 import com.tpb.hnk.util.info
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -21,7 +21,8 @@ import javax.inject.Singleton
 class MainPresenter @Inject constructor(
         private val idService: IdService,
         private val application: Application,
-        private val loader: Loader) : Presenter<MainViewContract>, MainPresenterContract, ItemLoader {
+        private val loader: Loader,
+        private val connectivityListener: ConnectivityListener) : Presenter<MainViewContract>, MainPresenterContract, ItemLoader, ConnectivityAware {
 
     lateinit var view: MainViewContract
     val adapter = ItemAdapter(this, application.resources)
@@ -29,12 +30,12 @@ class MainPresenter @Inject constructor(
     val idRequests = CompositeDisposable()
     val itemRequests = CompositeDisposable()
 
-
     override fun attachView(view: MainViewContract) {
         this.view = view
+        connectivityListener.addListener(this)
         view.bindRecyclerViewAdapter(adapter)
         view.showLoading()
-        loadIds(page.toObservable(idService))
+        loadIds()
     }
 
     override fun setPageType(newPage: HNPage) {
@@ -47,7 +48,7 @@ class MainPresenter @Inject constructor(
 
     override fun refresh() {
         info("Refreshing")
-        loadIds(page.toObservable(idService))
+        loadIds()
     }
 
 
@@ -57,12 +58,16 @@ class MainPresenter @Inject constructor(
     override fun onQueryTextSubmitted(query: String) {
     }
 
-    private fun loadIds(obs: Observable<List<Long>>) {
+    override fun networkChange(isActive: Boolean) {
+        if (!isActive) {
+            view.showError(R.string.error_title_no_network, R.string.error_message_no_network)
+        }
+    }
+
+    private fun loadIds() {
         idRequests.clear()
         itemRequests.clear()
-        idRequests.add(obs.subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::dispatchIds, this::handleIdLoadError))
+        idRequests.add(loader.getIds(page, this::dispatchIds, this::handleIdLoadError))
     }
 
     private fun dispatchIds(ids: List<Long>) {

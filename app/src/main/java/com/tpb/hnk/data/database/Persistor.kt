@@ -27,4 +27,11 @@ class Persistor<T>(val persistor: (it: T) -> Any) {
         }
     }
 
+    fun<U> persist(onNext: (it: U) -> Unit, converter: (obj: U) -> T): (it: U) -> Unit {
+        return {
+            executor.submit { persistor(converter(it)) }
+            onNext(it)
+        }
+    }
+
 }

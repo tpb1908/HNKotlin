@@ -23,3 +23,11 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-dontskipnonpubliclibraryclassmembers
+
+-keep class javax.annotation.** { *; }
+-dontwarn javax.annotation.**
+-dontwarn okio.**
+-dontwarn retrofit2.Platform$Java8
+-dontwarn org.codehouse.**

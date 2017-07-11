@@ -1,8 +1,12 @@
 package com.tpb.hnk.data
 
+import com.tpb.hnk.data.database.IdDao
 import com.tpb.hnk.data.database.ItemDao
 import com.tpb.hnk.data.database.Persistor
+import com.tpb.hnk.data.models.HNIdList
 import com.tpb.hnk.data.models.HNItem
+import com.tpb.hnk.data.services.HNPage
+import com.tpb.hnk.data.services.IdService
 import com.tpb.hnk.data.services.ItemService
 import com.tpb.hnk.util.ConnectivityAware
 import com.tpb.hnk.util.ConnectivityListener
@@ -15,12 +19,39 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by theo on 11/07/17.
  */
-class Loader(connectivityListener: ConnectivityListener, val itemService: ItemService, val dao: ItemDao, val persistor: Persistor<HNItem>): ConnectivityAware {
+class Loader(connectivityListener: ConnectivityListener, val itemService: ItemService,
+             val itemDao: ItemDao,
+             val idService: IdService,
+             val idDao: IdDao,
+             val itemPersistor: Persistor<HNItem>,
+             val idPersistor: Persistor<HNIdList>): ConnectivityAware {
 
     private var shouldUseNetwork = false
 
     init {
         connectivityListener.addListener(this)
+    }
+
+    fun getIds(page: HNPage,
+               onNext: (it: List<Long>) -> Unit = {},
+               onError: (err: Throwable) -> Unit = {},
+               onComplete: () -> Unit = {},
+               subscribeScheduler: Scheduler = Schedulers.newThread(),
+               observeScheduler: Scheduler = AndroidSchedulers.mainThread()): Disposable {
+        if (shouldUseNetwork) {
+            return page.toObservable(idService)
+                    .observeOn(observeScheduler)
+                    .subscribeOn(subscribeScheduler)
+                    .subscribeBy(onError,
+                            onComplete,
+                            idPersistor.persist(onNext, { HNIdList(System.nanoTime(), page, it) })
+                    )
+        } else {
+            return idDao.getLastIdList()
+                    .observeOn(observeScheduler)
+                    .subscribeOn(subscribeScheduler)
+                    .subscribe({ onNext(it.ids) }, onError, onComplete)
+        }
     }
 
     fun getItem(id: Long,
@@ -33,9 +64,9 @@ class Loader(connectivityListener: ConnectivityListener, val itemService: ItemSe
             return itemService.getItem(id)
                     .observeOn(observeScheduler)
                     .subscribeOn(subscribeScheduler)
-                    .subscribeBy(onNext = persistor.persist(onNext), onError = onError, onComplete = onComplete)
+                    .subscribeBy(onNext = itemPersistor.persist(onNext), onError = onError, onComplete = onComplete)
         } else {
-            return dao.getById(id)
+            return itemDao.getById(id)
                     .observeOn(observeScheduler)
                     .subscribeOn(subscribeScheduler)
                     .subscribe(onNext, onError, onComplete)

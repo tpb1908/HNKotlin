@@ -12,7 +12,7 @@ interface MainViewContract {
 
     fun hideLoading()
 
-    fun showError(@StringRes errorRes: Int)
+    fun showError(@StringRes titleRes: Int, @StringRes messageRes: Int)
 
     fun bindRecyclerViewAdapter(adapter: RecyclerView.Adapter<out RecyclerView.ViewHolder>)
 
