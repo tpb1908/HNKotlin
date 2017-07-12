@@ -38,7 +38,7 @@ class Loader(connectivityListener: ConnectivityListener, val itemService: ItemSe
                onNext: (it: List<Long>) -> Unit = { info("Default onNext")},
                onError: (err: Throwable) -> Unit = { info("Default onError")},
                onComplete: () -> Unit = { info("Default onComplete")},
-               subscribeScheduler: Scheduler = Schedulers.newThread(),
+               subscribeScheduler: Scheduler = Schedulers.io(),
                observeScheduler: Scheduler = AndroidSchedulers.mainThread()): Disposable {
         info("Beginning id load")
         if (shouldUseNetwork) {
@@ -71,7 +71,7 @@ class Loader(connectivityListener: ConnectivityListener, val itemService: ItemSe
                 onNext: (it: HNItem) -> Unit = {},
                 onError: (err: Throwable) -> Unit = {},
                 onComplete: () -> Unit = {},
-                subscribeScheduler: Scheduler = Schedulers.newThread(),
+                subscribeScheduler: Scheduler = Schedulers.io(),
                 observeScheduler: Scheduler = AndroidSchedulers.mainThread()): Disposable {
         if (shouldUseNetwork) {
             return itemService.getItem(id)
@@ -79,10 +79,17 @@ class Loader(connectivityListener: ConnectivityListener, val itemService: ItemSe
                     .subscribeOn(subscribeScheduler)
                     .subscribeBy(onNext = itemPersistor.persist(onNext), onError = onError, onComplete = onComplete)
         } else {
+
             return itemDao.getById(id)
                     .observeOn(observeScheduler)
                     .subscribeOn(subscribeScheduler)
-                    .subscribe(onNext, onError, onComplete)
+                    .subscribe({
+                        if (it.isEmpty()) {
+                            onError(Throwable(ERROR_ITEM_NOT_FOND))
+                        } else {
+                            onNext(it.first())
+                        }
+                    }, onError, onComplete)
         }
     }
 
@@ -92,5 +99,6 @@ class Loader(connectivityListener: ConnectivityListener, val itemService: ItemSe
 
     companion object {
         val ERROR_NO_IDS = "NO_IDS_IN_DB"
+        val ERROR_ITEM_NOT_FOND = "ITEM_NOT_FOUND"
     }
 }

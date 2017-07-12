@@ -37,6 +37,7 @@ class MainActivity : AppCompatActivity(), MainViewContract {
     lateinit var filter: ImageButton
     lateinit var searchView: SearchView
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -155,5 +156,6 @@ class MainActivity : AppCompatActivity(), MainViewContract {
     override fun bindRecyclerViewAdapter(adapter: RecyclerView.Adapter<out RecyclerView.ViewHolder>) {
         recycler.adapter = adapter
     }
+
 
 }

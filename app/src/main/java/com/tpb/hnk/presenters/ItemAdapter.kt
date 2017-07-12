@@ -25,19 +25,30 @@ class ItemAdapter(val loader: ItemLoader, val resources: Resources) : RecyclerVi
     var recycler: RecyclerView? = null
     val emptyText: String = resources.getString(R.string.empty_text)
     val infoFormat: String = resources.getString(R.string.format_item_info)
+    val loadFailText: String = resources.getString(R.string.error_cannot_load_item)
 
-    var data = ArrayList<Pair<Long, HNItem?>>(0)
+    var data = ArrayList<Triple<Long, HNItem?, Boolean>>(0)
 
     override fun receiveIds(ids: List<Long>) {
         data.clear()
-        ids.forEach { data.add(Pair(it, null)) }
+        ids.forEach { data.add(Triple(it, null, false)) }
         notifyDataSetChanged()
     }
 
     override fun receiveItem(item: HNItem) {
         data.forEachIndexed { index, (first) ->
             if (first == item.id) {
-                data[index] = Pair(first, item)
+                data[index] = Triple(first, item, false)
+                notifyItemChanged(index)
+                return
+            }
+        }
+    }
+
+    override fun itemLoadError(id: Long) {
+        data.forEachIndexed { index, (first) ->
+            if (first == id) {
+                data[index] = Triple(id, null, true)
                 notifyItemChanged(index)
                 return
             }
@@ -57,9 +68,12 @@ class ItemAdapter(val loader: ItemLoader, val resources: Resources) : RecyclerVi
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val item = data[position]
         if (item.second == null) {
-            loader.loadItem(item.first)
-
-            holder.title.text = emptyText
+            if (item.third) {
+                holder.title.text = loadFailText
+            } else {
+                holder.title.text = emptyText
+                loader.loadItem(item.first)
+            }
             holder.info.text = emptyText
             holder.comments.text = emptyText
 
@@ -103,6 +117,8 @@ class ItemAdapter(val loader: ItemLoader, val resources: Resources) : RecyclerVi
 interface ItemReceiver {
 
     fun receiveIds(ids: List<Long>)
+
+    fun itemLoadError(id: Long)
 
     fun receiveItem(item: HNItem)
 

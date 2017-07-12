@@ -31,6 +31,8 @@
     <string name="error_title_no_network">No network connection</string>
     <string name="error_message_no_network">Retrieving from database</string>
     <string name="error_description_no_network">A connection to the HackerNews API could not be established, and no content was cached.\n The application will retry once a connection is established</string>
+    <string name="error_cannot_load_item">Can\'t load item</string>
+
 
 </resources>
 

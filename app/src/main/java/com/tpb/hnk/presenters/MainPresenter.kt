@@ -29,6 +29,7 @@ class MainPresenter @Inject constructor(
     var page = HNPage.TOP
     val idRequests = CompositeDisposable()
     val itemRequests = CompositeDisposable()
+    var state = State.LOADING
 
     override fun attachView(view: MainViewContract) {
         this.view = view
@@ -71,6 +72,7 @@ class MainPresenter @Inject constructor(
     }
 
     private fun loadIds() {
+        state = State.LOADING
         idRequests.clear()
         itemRequests.clear()
         idRequests.add(loader.getIds(page, this::dispatchIds, this::handleIdLoadError))
@@ -78,12 +80,15 @@ class MainPresenter @Inject constructor(
 
     private fun dispatchIds(ids: List<Long>) {
         info("Ids loaded")
+        state = State.DISPLAYING
         adapter.receiveIds(ids)
         view.showDataState()
+        view.hideLoading()
     }
 
     private fun handleIdLoadError(err: Throwable) {
         error("Id load error", err)
+        state = State.ERROR
         view.hideLoading()
 
         if (err.message == Loader.ERROR_NO_IDS) {
@@ -93,8 +98,18 @@ class MainPresenter @Inject constructor(
     }
 
     override fun loadItem(id: Long) {
-        itemRequests.add(loader.getItem(id, onNext = { adapter.receiveItem(it) }))
+        itemRequests.add(
+                loader.getItem(
+                        id,
+                        onNext = adapter::receiveItem,
+                        onError = { adapter.itemLoadError(id) }
+                )
+        )
+    }
 
+
+    enum class State {
+        LOADING, DISPLAYING, ERROR
     }
 
 }

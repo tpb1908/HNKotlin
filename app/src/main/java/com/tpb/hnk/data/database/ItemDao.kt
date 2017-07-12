@@ -16,10 +16,10 @@ import io.reactivex.Flowable
     fun getAllItems(): Flowable<List<HNItem>>
 
     @Query("SELECT * FROM hnitem WHERE id = :id LIMIT 1")
-    fun getById(id: Long): Flowable<HNItem?>
+    fun getById(id: Long): Flowable<List<HNItem>>
 
     @Query("SELECT * FROM hnitem WHERE id IN (:ids)")
-    fun getAllById(ids: List<Long>): Flowable<List<HNItem?>>
+    fun getAllById(ids: List<Long>): Flowable<List<HNItem>>
 
     @Query("DELETE FROM hnitem WHERE time < :time")
     fun deleteOlderThan(time: Long)
