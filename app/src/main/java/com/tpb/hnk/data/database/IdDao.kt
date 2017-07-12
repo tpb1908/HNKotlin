@@ -16,7 +16,7 @@ import io.reactivex.Flowable
     fun getAllIdLists(): Flowable<List<HNIdList>>
 
     @Query("SELECT * FROM id_list ORDER BY time LIMIT 1")
-    fun getLastIdList(): Flowable<HNIdList>
+    fun getLastIdList(): Flowable<List<HNIdList>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertList(item: HNIdList)

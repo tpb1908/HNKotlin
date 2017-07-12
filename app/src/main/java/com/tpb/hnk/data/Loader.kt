@@ -10,6 +10,8 @@ import com.tpb.hnk.data.services.IdService
 import com.tpb.hnk.data.services.ItemService
 import com.tpb.hnk.util.ConnectivityAware
 import com.tpb.hnk.util.ConnectivityListener
+import com.tpb.hnk.util.info
+import io.reactivex.Flowable
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -33,11 +35,12 @@ class Loader(connectivityListener: ConnectivityListener, val itemService: ItemSe
     }
 
     fun getIds(page: HNPage,
-               onNext: (it: List<Long>) -> Unit = {},
-               onError: (err: Throwable) -> Unit = {},
-               onComplete: () -> Unit = {},
+               onNext: (it: List<Long>) -> Unit = { info("Default onNext")},
+               onError: (err: Throwable) -> Unit = { info("Default onError")},
+               onComplete: () -> Unit = { info("Default onComplete")},
                subscribeScheduler: Scheduler = Schedulers.newThread(),
                observeScheduler: Scheduler = AndroidSchedulers.mainThread()): Disposable {
+        info("Beginning id load")
         if (shouldUseNetwork) {
             return page.toObservable(idService)
                     .observeOn(observeScheduler)
@@ -50,8 +53,18 @@ class Loader(connectivityListener: ConnectivityListener, val itemService: ItemSe
             return idDao.getLastIdList()
                     .observeOn(observeScheduler)
                     .subscribeOn(subscribeScheduler)
-                    .subscribe({ onNext(it.ids) }, onError, onComplete)
+                    .subscribe({
+                        if (it.isEmpty()) {
+                            onError(Throwable("No ids in db"))
+                        } else {
+                            onNext(it.first().ids)
+                        }
+                    }, onError, onComplete)
         }
+    }
+
+    fun getAllIdLists(): Flowable<List<HNIdList>> {
+        return idDao.getAllIdLists()
     }
 
     fun getItem(id: Long,

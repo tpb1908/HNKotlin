@@ -20,14 +20,19 @@ class Persistor<T>(val persistor: (it: T) -> Any) {
      * calling [onNext]
      * @param onNext The method to be run after persisting
      */
-    fun persist(onNext: (it: T) -> Unit): (it: T) -> Unit {
+    inline fun persist(crossinline onNext: (it: T) -> Unit): (it: T) -> Unit {
         return {
             executor.submit { persistor(it) }
             onNext(it)
         }
     }
 
-    fun<U> persist(onNext: (it: U) -> Unit, converter: (obj: U) -> T): (it: U) -> Unit {
+    /**
+     * Returns a function which takes an instance of a type [U], and
+     * executes a call to [persistor] on an ExecutorService with the instance of
+     * type [T] returned from the [converter] function, before calling [onNext]
+     */
+    inline fun<U> persist(crossinline onNext: (it: U) -> Unit, crossinline converter: (obj: U) -> T): (it: U) -> Unit {
         return {
             executor.submit { persistor(converter(it)) }
             onNext(it)
