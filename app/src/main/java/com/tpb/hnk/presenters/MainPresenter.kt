@@ -80,7 +80,6 @@ class MainPresenter @Inject constructor(
         info("Ids loaded")
         adapter.receiveIds(ids)
         view.showDataState()
-        view.hideLoading()
     }
 
     private fun handleIdLoadError(err: Throwable) {

@@ -53,6 +53,7 @@ class MainActivity : AppCompatActivity(), MainViewContract {
         setSupportActionBar(toolbar)
         supportActionBar?.title = null
         bindMenuItems()
+        initErrorState()
 
         presenter.attachView(this)
 
@@ -105,6 +106,12 @@ class MainActivity : AppCompatActivity(), MainViewContract {
                 return true
             }
         })
+    }
+
+    private fun initErrorState() {
+        text_error_title.text = getString(R.string.error_title_no_network)
+        text_error_content.text = getString(R.string.error_description_no_network)
+        image_error_icon.setImageResource(R.drawable.ic_signal_wifi_off_black)
     }
 
 
