@@ -55,7 +55,7 @@ class Loader(connectivityListener: ConnectivityListener, val itemService: ItemSe
                     .subscribeOn(subscribeScheduler)
                     .subscribe({
                         if (it.isEmpty()) {
-                            onError(Throwable("No ids in db"))
+                            onError(Throwable(ERROR_NO_IDS))
                         } else {
                             onNext(it.first().ids)
                         }
@@ -88,5 +88,9 @@ class Loader(connectivityListener: ConnectivityListener, val itemService: ItemSe
 
     override fun networkChange(isActive: Boolean) {
         shouldUseNetwork = isActive
+    }
+
+    companion object {
+        val ERROR_NO_IDS = "NO_IDS_IN_DB"
     }
 }

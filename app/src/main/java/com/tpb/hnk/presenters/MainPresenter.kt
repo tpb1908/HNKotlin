@@ -41,6 +41,7 @@ class MainPresenter @Inject constructor(
     override fun setPageType(newPage: HNPage) {
         if (page != newPage) {
             page = newPage
+            view.showDataState()
             view.showLoading()
             refresh()
         }
@@ -60,7 +61,12 @@ class MainPresenter @Inject constructor(
 
     override fun networkChange(isActive: Boolean) {
         if (!isActive) {
-            view.showError(R.string.error_title_no_network, R.string.error_message_no_network)
+            view.showSneakerError(R.string.error_title_no_network, R.string.error_message_no_network)
+        } else {
+            view.showDataState()
+            if (adapter.itemCount == 0) {
+                refresh()
+            }
         }
     }
 
@@ -73,12 +79,18 @@ class MainPresenter @Inject constructor(
     private fun dispatchIds(ids: List<Long>) {
         info("Ids loaded")
         adapter.receiveIds(ids)
+        view.showDataState()
         view.hideLoading()
     }
 
     private fun handleIdLoadError(err: Throwable) {
         error("Id load error", err)
         view.hideLoading()
+
+        if (err.message == Loader.ERROR_NO_IDS) {
+            view.showErrorState()
+        }
+
     }
 
     override fun loadItem(id: Long) {

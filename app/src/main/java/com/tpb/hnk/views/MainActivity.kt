@@ -22,6 +22,7 @@ import com.tpb.hnk.data.services.HNPage
 import com.tpb.hnk.presenters.MainPresenter
 import com.tpb.hnk.presenters.MainViewContract
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.stub_error_state.*
 import javax.inject.Inject
 
 /**
@@ -122,12 +123,26 @@ class MainActivity : AppCompatActivity(), MainViewContract {
        runOnUiThread { refresher.isRefreshing = false}
     }
 
-    override fun showError(@StringRes titleRes: Int, @StringRes messageRes: Int) {
+    override fun showSneakerError(@StringRes titleRes: Int, @StringRes messageRes: Int) {
         Sneaker.with(this)
                 .setTitle(getString(titleRes))
                 .setMessage(getString(messageRes))
                 .sneakError()
 
+    }
+
+    override fun showErrorState() {
+        if (recycler.visibility == View.VISIBLE) {
+            recycler.visibility = View.GONE
+            error_state_layout.visibility = View.VISIBLE
+        }
+    }
+
+    override fun showDataState() {
+        if (error_state_layout.visibility == View.VISIBLE) {
+            error_state_layout.visibility = View.GONE
+            recycler.visibility = View.VISIBLE
+        }
     }
 
     override fun bindRecyclerViewAdapter(adapter: RecyclerView.Adapter<out RecyclerView.ViewHolder>) {
