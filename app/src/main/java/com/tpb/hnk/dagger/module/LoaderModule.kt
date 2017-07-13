@@ -1,9 +1,10 @@
 package com.tpb.hnk.dagger.module
 
-import com.tpb.hnk.data.Loader
 import com.tpb.hnk.data.database.IdDao
 import com.tpb.hnk.data.database.ItemDao
 import com.tpb.hnk.data.database.Persistor
+import com.tpb.hnk.data.loaders.IdLoader
+import com.tpb.hnk.data.loaders.ItemLoader
 import com.tpb.hnk.data.models.HNIdList
 import com.tpb.hnk.data.models.HNItem
 import com.tpb.hnk.data.services.IdService
@@ -21,14 +22,20 @@ class LoaderModule {
     
     @Provides
     @Singleton
-    fun provideLoader(connectivityListener: ConnectivityListener,
-                      itemService: ItemService,
-                      itemDao: ItemDao,
+    fun provideIdLoader(connectivityListener: ConnectivityListener,
                       idService: IdService,
                       idDao: IdDao,
-                      itemPersistor: Persistor<HNItem>,
-                      idPersistor: Persistor<HNIdList>): Loader {
-        return Loader(connectivityListener, itemService, itemDao, idService, idDao, itemPersistor, idPersistor)
+                      idPersistor: Persistor<HNIdList>): IdLoader {
+        return IdLoader(connectivityListener, idService, idDao, idPersistor)
+    }
+
+    @Provides
+    @Singleton
+    fun provideItemLoader(connectivityListener: ConnectivityListener,
+                          itemService: ItemService,
+                          itemDao: ItemDao,
+                          itemPersistor: Persistor<HNItem>): ItemLoader {
+        return ItemLoader(connectivityListener, itemService, itemDao, itemPersistor)
     }
     
 }

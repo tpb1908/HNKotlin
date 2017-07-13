@@ -3,9 +3,9 @@ package com.tpb.hnk.presenters
 import android.app.Application
 import com.tpb.hnk.R
 import com.tpb.hnk.data.ItemLoader
-import com.tpb.hnk.data.Loader
+import com.tpb.hnk.data.loaders.IdLoader
+import com.tpb.hnk.data.loaders.Loader
 import com.tpb.hnk.data.services.HNPage
-import com.tpb.hnk.data.services.IdService
 import com.tpb.hnk.util.ConnectivityAware
 import com.tpb.hnk.util.ConnectivityListener
 import com.tpb.hnk.util.error
@@ -19,9 +19,9 @@ import javax.inject.Singleton
  */
 @Singleton
 class MainPresenter @Inject constructor(
-        private val idService: IdService,
         private val application: Application,
-        private val loader: Loader,
+        private val idLoader: IdLoader,
+        private val itemLoader: com.tpb.hnk.data.loaders.ItemLoader,
         private val connectivityListener: ConnectivityListener) : Presenter<MainViewContract>, MainPresenterContract, ItemLoader, ConnectivityAware {
 
     lateinit var view: MainViewContract
@@ -75,7 +75,7 @@ class MainPresenter @Inject constructor(
         state = State.LOADING
         idRequests.clear()
         itemRequests.clear()
-        idRequests.add(loader.getIds(page, this::dispatchIds, this::handleIdLoadError))
+        idRequests.add(idLoader.getIds(page, this::dispatchIds, this::handleIdLoadError))
     }
 
     private fun dispatchIds(ids: List<Long>) {
@@ -99,7 +99,7 @@ class MainPresenter @Inject constructor(
 
     override fun loadItem(id: Long) {
         itemRequests.add(
-                loader.getItem(
+                itemLoader.getItem(
                         id,
                         onNext = adapter::receiveItem,
                         onError = { adapter.itemLoadError(id) }
