@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout android:id="@+id/coordinator"
+                                                 xmlns:android="http://schemas.android.com/apk/res/android"
                                                  xmlns:app="http://schemas.android.com/apk/res-auto"
                                                  xmlns:tools="http://schemas.android.com/tools"
-                                                 android:orientation="vertical"
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent"
-                                                 android:animateLayoutChanges="true">
+                                                 android:animateLayoutChanges="true"
+                                                 android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -49,7 +50,8 @@
 
             </android.support.v7.widget.RecyclerView>
 
-            <include layout="@layout/stub_error_state"
+            <include
+                layout="@layout/stub_error_state"
                 android:visibility="gone"/>
 
         </FrameLayout>

@@ -1,6 +1,7 @@
 package com.tpb.hnk.presenters
 
 import android.app.Application
+import android.view.View
 import com.tpb.hnk.R
 import com.tpb.hnk.data.ItemLoader
 import com.tpb.hnk.data.loaders.IdLoader
@@ -67,6 +68,12 @@ class MainPresenter @Inject constructor(
             view.showDataState()
             if (adapter.itemCount == 0) {
                 refresh()
+            } else {
+                view.showSnackbar(
+                        R.string.message_connection_established,
+                        R.string.action_refresh,
+                        View.OnClickListener { refresh() }
+                )
             }
         }
     }

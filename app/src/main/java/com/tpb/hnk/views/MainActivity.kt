@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.StringRes
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -136,7 +137,12 @@ class MainActivity : AppCompatActivity(), MainViewContract {
                 .setTitle(getString(titleRes))
                 .setMessage(getString(messageRes))
                 .sneakError()
+    }
 
+    override fun showSnackbar(messageRes: Int, actionRes: Int, listener: View.OnClickListener) {
+        Snackbar.make(coordinator, getString(messageRes), Snackbar.LENGTH_LONG)
+                .setAction(getString(actionRes), listener)
+                .show()
     }
 
     override fun showErrorState() {

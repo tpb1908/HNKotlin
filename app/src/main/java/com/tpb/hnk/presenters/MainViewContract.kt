@@ -2,6 +2,7 @@ package com.tpb.hnk.presenters
 
 import android.support.annotation.StringRes
 import android.support.v7.widget.RecyclerView
+import android.view.View
 
 /**
  * Created by theo on 08/07/17.
@@ -13,6 +14,8 @@ interface MainViewContract {
     fun hideLoading()
 
     fun showSneakerError(@StringRes titleRes: Int, @StringRes messageRes: Int)
+
+    fun showSnackbar(@StringRes messageRes: Int, @StringRes actionRes: Int, listener: View.OnClickListener)
 
     fun showErrorState()
 
