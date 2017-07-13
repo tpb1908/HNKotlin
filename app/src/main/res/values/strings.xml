@@ -34,6 +34,7 @@
     <string name="error_cannot_load_item">Can\'t load item</string>
 
     <string name="message_connection_established">Connection established</string>
+    <string name="message_click_to_refresh">Click to refresh</string>
 
     <string name="action_refresh">Refresh</string>
 

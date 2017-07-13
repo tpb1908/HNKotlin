@@ -1,8 +1,9 @@
 package com.tpb.hnk.presenters
 
-import android.app.Application
+import android.content.res.Resources
 import android.view.View
 import com.tpb.hnk.R
+import com.tpb.hnk.dagger.scopes.ActivityScope
 import com.tpb.hnk.data.ItemLoader
 import com.tpb.hnk.data.loaders.IdLoader
 import com.tpb.hnk.data.loaders.Loader
@@ -13,20 +14,19 @@ import com.tpb.hnk.util.error
 import com.tpb.hnk.util.info
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Created by theo on 08/07/17.
  */
-@Singleton
+@ActivityScope
 class MainPresenter @Inject constructor(
-        private val application: Application,
+        resources: Resources,
         private val idLoader: IdLoader,
         private val itemLoader: com.tpb.hnk.data.loaders.ItemLoader,
         private val connectivityListener: ConnectivityListener) : Presenter<MainViewContract>, MainPresenterContract, ItemLoader, ConnectivityAware {
 
     lateinit var view: MainViewContract
-    val adapter = ItemAdapter(this, application.resources)
+    val adapter = ItemAdapter(this, resources)
     var page = HNPage.TOP
     val idRequests = CompositeDisposable()
     val itemRequests = CompositeDisposable()

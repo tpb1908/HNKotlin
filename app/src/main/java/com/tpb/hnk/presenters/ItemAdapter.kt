@@ -26,6 +26,7 @@ class ItemAdapter(val loader: ItemLoader, val resources: Resources) : RecyclerVi
     val emptyText: String = resources.getString(R.string.empty_text)
     val infoFormat: String = resources.getString(R.string.format_item_info)
     val loadFailText: String = resources.getString(R.string.error_cannot_load_item)
+    val refreshText: String = resources.getString(R.string.message_click_to_refresh)
 
     var data = ArrayList<Triple<Long, HNItem?, Boolean>>(0)
 
@@ -70,11 +71,12 @@ class ItemAdapter(val loader: ItemLoader, val resources: Resources) : RecyclerVi
         if (item.second == null) {
             if (item.third) {
                 holder.title.text = loadFailText
+                holder.info.text = refreshText
             } else {
                 holder.title.text = emptyText
+                holder.info.text = emptyText
                 loader.loadItem(item.first)
             }
-            holder.info.text = emptyText
             holder.comments.text = emptyText
 
         } else {
@@ -96,7 +98,11 @@ class ItemAdapter(val loader: ItemLoader, val resources: Resources) : RecyclerVi
                     item.second?.descendants)
         }
         holder.itemView.setOnClickListener {
-            info(item.second?.toString())
+            if (item.third) {
+                loader.loadItem(item.first)
+            } else {
+                info(item.second?.toString())
+            }
         }
     }
 
