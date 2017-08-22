@@ -1,13 +1,16 @@
-package com.tpb.hnk.presenters
+package com.tpb.hnk.presenters.main
 
 import android.content.res.Resources
 import android.view.View
 import com.tpb.hnk.R
 import com.tpb.hnk.dagger.scopes.ActivityScope
-import com.tpb.hnk.data.ItemLoader
-import com.tpb.hnk.data.loaders.IdLoader
 import com.tpb.hnk.data.loaders.Loader
+import com.tpb.hnk.data.loaders.PageLoader
 import com.tpb.hnk.data.services.HNPage
+import com.tpb.hnk.presenters.Presenter
+import com.tpb.hnk.presenters.State
+import com.tpb.hnk.presenters.shared.ItemAdapter
+import com.tpb.hnk.presenters.shared.ItemAdapterHandlerContract
 import com.tpb.hnk.util.ConnectivityAware
 import com.tpb.hnk.util.ConnectivityListener
 import com.tpb.hnk.util.error
@@ -21,9 +24,9 @@ import javax.inject.Inject
 @ActivityScope
 class MainPresenter @Inject constructor(
         resources: Resources,
-        private val idLoader: IdLoader,
+        private val idLoader: PageLoader,
         private val itemLoader: com.tpb.hnk.data.loaders.ItemLoader,
-        private val connectivityListener: ConnectivityListener) : Presenter<MainViewContract>, MainPresenterContract, ItemLoader, ConnectivityAware {
+        private val connectivityListener: ConnectivityListener) : Presenter<MainViewContract>, MainPresenterContract, ItemAdapterHandlerContract, ConnectivityAware {
 
     lateinit var view: MainViewContract
     val adapter = ItemAdapter(this, resources)
@@ -109,14 +112,13 @@ class MainPresenter @Inject constructor(
                 itemLoader.getItem(
                         id,
                         onNext = adapter::receiveItem,
-                        onError = { adapter.itemLoadError(id) }
+                        onError = {
+                            error("Item load error", it)
+                            adapter.itemLoadError(id)
+                        }
                 )
         )
     }
 
-
-    enum class State {
-        LOADING, DISPLAYING, ERROR
-    }
 
 }

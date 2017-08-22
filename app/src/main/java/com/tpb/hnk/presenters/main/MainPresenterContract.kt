@@ -1,4 +1,4 @@
-package com.tpb.hnk.presenters
+package com.tpb.hnk.presenters.main
 
 import com.tpb.hnk.data.services.HNPage
 

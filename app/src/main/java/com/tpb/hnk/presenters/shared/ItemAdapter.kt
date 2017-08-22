@@ -1,4 +1,4 @@
-package com.tpb.hnk.presenters
+package com.tpb.hnk.presenters.shared
 
 import android.content.res.Resources
 import android.graphics.Typeface
@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.tpb.hnk.R
-import com.tpb.hnk.data.ItemLoader
 import com.tpb.hnk.data.models.HNItem
 import com.tpb.hnk.util.info
 import kotlinx.android.synthetic.main.viewholder_item.view.*
@@ -20,7 +19,7 @@ import kotlinx.android.synthetic.main.viewholder_item.view.*
 /**
  * Created by theo on 09/07/17.
  */
-class ItemAdapter(val loader: ItemLoader, val resources: Resources) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>(), ItemReceiver {
+class ItemAdapter(val loader: ItemAdapterHandlerContract, val resources: Resources) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>(), ItemAdapterContract {
 
     var recycler: RecyclerView? = null
     val emptyText: String = resources.getString(R.string.empty_text)
@@ -32,6 +31,7 @@ class ItemAdapter(val loader: ItemLoader, val resources: Resources) : RecyclerVi
 
     override fun receiveIds(ids: List<Long>) {
         data.clear()
+        data.ensureCapacity(ids.size)
         ids.forEach { data.add(Triple(it, null, false)) }
         notifyDataSetChanged()
     }
@@ -120,7 +120,7 @@ class ItemAdapter(val loader: ItemLoader, val resources: Resources) : RecyclerVi
 }
 
 
-interface ItemReceiver {
+interface ItemAdapterContract {
 
     fun receiveIds(ids: List<Long>)
 

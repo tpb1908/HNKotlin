@@ -11,6 +11,6 @@ import retrofit2.http.Path
 interface UserService {
 
     @GET("/user/{id}.json")
-    fun getUser(@Path("id") id: Long): Observable<HNUser>
+    fun getUser(@Path("id") id: String): Observable<HNUser>
 
 }

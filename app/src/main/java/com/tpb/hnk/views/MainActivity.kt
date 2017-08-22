@@ -20,8 +20,8 @@ import com.irozon.sneaker.Sneaker
 import com.tpb.hnk.App
 import com.tpb.hnk.R
 import com.tpb.hnk.data.services.HNPage
-import com.tpb.hnk.presenters.MainPresenter
-import com.tpb.hnk.presenters.MainViewContract
+import com.tpb.hnk.presenters.main.MainPresenter
+import com.tpb.hnk.presenters.main.MainViewContract
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.stub_error_state.*
 import javax.inject.Inject
@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity(), MainViewContract {
         searchView.maxWidth = Integer.MAX_VALUE
 
         filter = ImageButton(this)
-        filter.setBackgroundColor(android.R.color.transparent)
+        filter.setBackgroundColor(resources.getColor(android.R.color.transparent))
         filter.setImageResource(R.drawable.ic_filter_list_black)
 
         searchView.setOnSearchClickListener {

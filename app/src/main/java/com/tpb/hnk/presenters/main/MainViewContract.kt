@@ -1,4 +1,4 @@
-package com.tpb.hnk.presenters
+package com.tpb.hnk.presenters.main
 
 import android.support.annotation.StringRes
 import android.support.v7.widget.RecyclerView

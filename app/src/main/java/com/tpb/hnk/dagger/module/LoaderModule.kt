@@ -3,12 +3,14 @@ package com.tpb.hnk.dagger.module
 import com.tpb.hnk.data.database.IdDao
 import com.tpb.hnk.data.database.ItemDao
 import com.tpb.hnk.data.database.Persistor
-import com.tpb.hnk.data.loaders.IdLoader
 import com.tpb.hnk.data.loaders.ItemLoader
+import com.tpb.hnk.data.loaders.PageLoader
+import com.tpb.hnk.data.loaders.UserLoader
 import com.tpb.hnk.data.models.HNIdList
 import com.tpb.hnk.data.models.HNItem
 import com.tpb.hnk.data.services.IdService
 import com.tpb.hnk.data.services.ItemService
+import com.tpb.hnk.data.services.UserService
 import com.tpb.hnk.util.ConnectivityListener
 import dagger.Module
 import dagger.Provides
@@ -22,11 +24,11 @@ class LoaderModule {
     
     @Provides
     @Singleton
-    fun provideIdLoader(connectivityListener: ConnectivityListener,
-                      idService: IdService,
-                      idDao: IdDao,
-                      idPersistor: Persistor<HNIdList>): IdLoader {
-        return IdLoader(connectivityListener, idService, idDao, idPersistor)
+    fun providePageLoader(connectivityListener: ConnectivityListener,
+                          idService: IdService,
+                          idDao: IdDao,
+                          idPersistor: Persistor<HNIdList>): PageLoader {
+        return PageLoader(connectivityListener, idService, idDao, idPersistor)
     }
 
     @Provides
@@ -37,5 +39,12 @@ class LoaderModule {
                           itemPersistor: Persistor<HNItem>): ItemLoader {
         return ItemLoader(connectivityListener, itemService, itemDao, itemPersistor)
     }
-    
+
+    @Provides
+    @Singleton
+    fun provideUserLoader(connectivityListener: ConnectivityListener, userService: UserService): UserLoader {
+        return UserLoader(connectivityListener, userService)
+    }
+
+
 }

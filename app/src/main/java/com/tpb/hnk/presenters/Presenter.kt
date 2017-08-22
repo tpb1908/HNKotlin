@@ -9,4 +9,7 @@ interface Presenter<in T> {
     //Could be called setView, but that interferes with Kotlin
     fun attachView(view: T)
 
+
+
+
 }

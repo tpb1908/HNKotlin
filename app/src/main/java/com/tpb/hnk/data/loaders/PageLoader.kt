@@ -16,10 +16,10 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by theo on 13/07/17.
  */
-class IdLoader(connectivityListener: ConnectivityListener
-               , val idService: IdService,
-               val idDao: IdDao,
-               val idPersistor: Persistor<HNIdList>): Loader(connectivityListener) {
+class PageLoader(connectivityListener: ConnectivityListener,
+                 val idService: IdService,
+                 val idDao: IdDao,
+                 val idPersistor: Persistor<HNIdList>): Loader(connectivityListener) {
 
     fun getIds(page: HNPage,
                onNext: (it: List<Long>) -> Unit,
